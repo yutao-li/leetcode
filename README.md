@@ -1,2 +1,2 @@
 # leetcode
-some of my distincitve brilliant solutions to leetcode questions
+this repository keeps tracks of all my distinctive and efficient solutions comparable to the best ones.
