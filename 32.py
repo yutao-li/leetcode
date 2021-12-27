@@ -46,5 +46,30 @@ class Solution:
         return max(dp)
 
 
+class Solution1:
+    def longestValidParentheses(self, s: str) -> int:
+        stack = []
+        res = 0
+        for ch in s:
+            if ch == '(':
+                stack.append(ch)
+            elif stack:
+                if stack[-1] == '(':
+                    stack[-1] = 2
+                    if len(stack) >= 2 and type(stack[-2]) is int:
+                        stack.append(stack.pop() + stack.pop())
+                else:
+                    if len(stack) >= 2:
+                        i = stack.pop()
+                        stack.pop()
+                        stack.append(i + 2)
+                        if len(stack) >= 2 and type(stack[-2]) is int:
+                            stack.append(stack.pop() + stack.pop())
+                    else:
+                        res = max(res, stack[0])
+                        stack = []
+        return max(res, max((i for i in stack if type(i) is int), default=0))
+
+
 print(Solution().longestValidParentheses("("))
 print(Solution().longestValidParentheses("))())()()())))"))

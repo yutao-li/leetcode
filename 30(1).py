@@ -1,11 +1,9 @@
-from typing import List
 from collections import Counter
+from typing import List
 
 
 class Solution:
     def findSubstring(self, s: str, words: List[str]) -> List[int]:
-        if not words:
-            return []
         le = len(words[0])
         res = []
         leng = le * len(words)

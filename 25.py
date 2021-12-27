@@ -1,8 +1,11 @@
+from typing import Optional
+
+
 # Definition for singly-linked list.
 class ListNode:
-    def __init__(self, x):
-        self.val = x
-        self.next = None
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 
 
 class Solution:
@@ -35,6 +38,25 @@ class Solution:
             cur.next = pre
         pre_end.next = None
         return head
+
+
+class Solution1:
+    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        res = ListNode()
+        tail = res
+        while head:
+            stack = []
+            for _ in range(k):
+                if not head:
+                    tail.next = stack[0]
+                    return res.next
+                stack.append(head)
+                head = head.next
+            for _ in range(k):
+                tail.next = stack.pop()
+                tail = tail.next
+        tail.next = None
+        return res.next
 
 
 nodes = [ListNode(i) for i in range(1, 3)]

@@ -1,3 +1,6 @@
+from functools import lru_cache
+
+
 class Solution:
     def minDistance(self, word1, word2):
         """
@@ -17,6 +20,22 @@ class Solution:
                 else:
                     op[i1][i2] = 1 + min(op[i1 - 1][i2 - 1], op[i1 - 1][i2], op[i1][i2 - 1])
         return op[len(word1)][len(word2)]
+
+
+class Solution1:
+    def minDistance(self, word1: str, word2: str) -> int:
+        @lru_cache(None)
+        def distance(i1, i2) -> int:
+            if i2 == len(word2):
+                return len(word1) - i1
+            if i1 == len(word1):
+                return len(word2) - i2
+            if word1[i1] == word2[i2]:
+                return distance(i1 + 1, i2 + 1)
+            else:
+                return 1 + min(distance(i1 + 1, i2 + 1), distance(i1, i2 + 1), distance(i1 + 1, i2))
+
+        return distance(0, 0)
 
 
 word1 = "intention"
