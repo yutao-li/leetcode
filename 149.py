@@ -1,6 +1,6 @@
-from typing import List
 from collections import Counter, defaultdict
 from fractions import Fraction
+from typing import List
 
 
 class Solution:
@@ -23,4 +23,22 @@ class Solution:
         return num
 
 
-print(Solution().maxPoints([[3, 1], [12, 3], [3, 1], [-6, -1]]))
+class Solution1:
+    def maxPoints(self, points: List[List[int]]) -> int:
+        count = defaultdict(lambda: defaultdict(int))
+        for i, (x, y) in enumerate(points):
+            for j, (x1, y1) in enumerate(points[i + 1:], i + 1):
+                count[i][Fraction(y - y1, x - x1) if x - x1 else float('inf')] += 1
+        return max((i for v in count.values() for i in v.values()), default=0) + 1
+
+
+class Solution2:
+    def maxPoints(self, points: List[List[int]]) -> int:
+        count = defaultdict(lambda: defaultdict(int))
+        for i, (x, y) in enumerate(points):
+            for j, (x1, y1) in enumerate(points[i + 1:], i + 1):
+                count[i][(y - y1) / (x - x1) if x - x1 else float('inf')] += 1
+        return max((i for v in count.values() for i in v.values()), default=0) + 1
+
+
+print(Solution1().maxPoints([[3, 1], [12, 3], [3, 1], [-6, -1]]))

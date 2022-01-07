@@ -40,4 +40,16 @@ class Solution:
         return sum(candies)
 
 
+class Solution1:
+    def candy(self, ratings: List[int]) -> int:
+        n = len(ratings)
+        res = [1] * n
+        for i in sorted(range(n), key=lambda i: ratings[i]):
+            if i > 0 and ratings[i - 1] < ratings[i]:
+                res[i] = max(res[i], res[i - 1] + 1)
+            if i < n - 1 and ratings[i + 1] < ratings[i]:
+                res[i] = max(res[i], res[i + 1] + 1)
+        return sum(res)
+
+
 print(Solution().candy([29, 51, 87, 87, 72, 12]))
