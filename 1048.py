@@ -1,5 +1,5 @@
-from typing import List
 from collections import defaultdict
+from typing import List
 
 
 class Solution:
@@ -25,3 +25,19 @@ class Solution:
             for w in sw[l]:
                 res = max(res, dfs(w))
         return res
+
+
+class Solution1:
+    def longestStrChain(self, words: List[str]) -> int:
+        len_set = set(len(i) for i in words)
+        seen = dict()
+        for w in sorted(words, key=len):
+            l = 0
+            if len(w) - 1 in len_set:
+                shorter = [w[:i] + w[i + 1:] for i in range(len(w))]
+                l = max((seen[i] + 1 for i in shorter if i in seen), default=0)
+            seen[w] = l
+        return max(seen.values()) + 1
+
+
+print(Solution1().longestStrChain(words=["abcd", "dbqca"]))

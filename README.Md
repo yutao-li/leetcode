@@ -9,3 +9,5 @@ Leetcode inventory.
 115.https://leetcode.com/problems/distinct-subsequences/discuss/463088/new-idea-32ms-in-python3-not-DP
 
 149.https://leetcode.com/problems/max-points-on-a-line/discuss/1655358/4-line-solution
+
+716.https://leetcode.com/problems/max-stack/discuss/1727772/a-single-heap-is-sufficient
