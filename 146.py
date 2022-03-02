@@ -21,17 +21,17 @@ class LRUCache:
         else:
             cur_node = self.di[key]
             if self.h_key != key:
-                next_node = cur_node.next
+                next_node = cur_node.right
                 pre_node = cur_node.pre
                 if next_node:
                     next_node.pre = pre_node
                 else:
                     self.b_key = pre_node.key
-                pre_node.next = next_node
+                pre_node.right = next_node
                 head = self.di[self.h_key]
                 head.pre = cur_node
                 cur_node.pre = None
-                cur_node.next = head
+                cur_node.right = head
                 self.h_key = key
             return cur_node.value
 
@@ -40,7 +40,7 @@ class LRUCache:
             if self.capacity > 1:
                 if self.counter == self.capacity:
                     second = self.di[self.b_key].pre
-                    second.next = None
+                    second.right = None
                     del self.di[self.b_key]
                     self.b_key = second.key
                     self.counter -= 1

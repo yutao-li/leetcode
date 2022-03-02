@@ -1,5 +1,5 @@
-from typing import List
 from collections import deque
+from typing import List
 
 
 class Solution:
@@ -27,5 +27,4 @@ class Solution:
         return li
 
 
-print(Solution().maxSlidingWindow([1, 3, -1, -3, 5, 3, 6, 7]
-                                  , 3))
+print(Solution().maxSlidingWindow([1, 3, -1, -3, 5, 3, 6, 7], 3))

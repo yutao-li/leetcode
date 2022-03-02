@@ -1,5 +1,5 @@
-from collections import Counter, deque
 import bisect
+from collections import Counter, deque, defaultdict
 from typing import *
 
 
@@ -48,5 +48,25 @@ class Solution:
         return res
 
 
-inpu = [-1, 0, 1, 0]
-print(Solution().threeSum(inpu))
+class Solution1:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        counter = Counter(nums)
+        nums = sorted(counter)
+        two_sum = defaultdict(list)
+        res = []
+        for i, n in enumerate(nums):
+            res += [comb + [n] for comb in two_sum[-n]]
+            c = counter[n]
+            if c >= 2:
+                if -2 * n in counter and n > 0:
+                    res.append([-2 * n, n, n])
+                two_sum[n * 2].append([n] * 2)
+            if c >= 3 and n == 0:
+                res.append([0, 0, 0])
+            for j in nums[:i]:
+                two_sum[j + n].append([j, n])
+        return res
+
+
+inpu = [1, 1, -2]
+print(Solution1().threeSum(inpu))

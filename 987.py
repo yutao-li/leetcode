@@ -25,4 +25,4 @@ class Solution:
                     pool1.append((node.right, col + 1))
             pool = pool1
             layer += 1
-        return [[j for _, j in sorted(d[i])] for i in sorted(d.keys())]
+        return [[j for _, j in sorted(d[i])] for i in range(min(d.keys()), max(d.keys()) + 1)]

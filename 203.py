@@ -14,8 +14,8 @@ class Solution:
             pre = head
             while cur:
                 if cur.val == val:
-                    pre.next = cur.next
+                    pre.next = cur.right
                 else:
                     pre = cur
-                cur = cur.next
+                cur = cur.right
         return head

@@ -15,7 +15,7 @@ class Solution:
             res = node
             l = node.left
             if l:
-                res = dfs(node.left)
+                res = dfs(l)
                 l.left = node.right
                 l.right = node
             return res

@@ -25,11 +25,13 @@ class Solution:
 
 class Solution1:
     def maxPoints(self, points: List[List[int]]) -> int:
+        if len(points) <= 1:
+            return 1
         count = defaultdict(lambda: defaultdict(int))
         for i, (x, y) in enumerate(points):
             for j, (x1, y1) in enumerate(points[i + 1:], i + 1):
                 count[i][Fraction(y - y1, x - x1) if x - x1 else float('inf')] += 1
-        return max((i for v in count.values() for i in v.values()), default=0) + 1
+        return max(i for v in count.values() for i in v.values()) + 1
 
 
 class Solution2:

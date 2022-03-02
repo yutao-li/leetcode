@@ -20,9 +20,9 @@ class Solution:
             if d == len(word):
                 node.w = True
             else:
-                if word[d] not in node.next:
-                    node.next[word[d]] = Solution.Node()
-                self.auxput(word, d + 1, node.next[word[d]])
+                if word[d] not in node.right:
+                    node.right[word[d]] = Solution.Node()
+                self.auxput(word, d + 1, node.right[word[d]])
 
     def dfs(self, s, index, node, trie):
         if index == len(s):
@@ -38,8 +38,8 @@ class Solution:
                     result = self.dfs(s, index, trie.root, trie)
                     trie.memoization[index] = result
                 result = [[index] + spaces for spaces in result]
-            if s[index] in node.next:
-                result += self.dfs(s, index + 1, node.next[s[index]], trie)
+            if s[index] in node.right:
+                result += self.dfs(s, index + 1, node.right[s[index]], trie)
             return result
 
     def wordBreak(self, s, wordDict):

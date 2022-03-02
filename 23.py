@@ -67,10 +67,10 @@ class Solution1:
         while l1 is not None and l2 is not None:
             if l1.val < l2.val:
                 tmp.next = l1
-                l1 = l1.next
+                l1 = l1.right
             else:
                 tmp.next = l2
-                l2 = l2.next
+                l2 = l2.right
             tmp = tmp.next
         if l1 is None:
             tmp.next = l2
@@ -85,12 +85,9 @@ class Solution2:
             return None
         if len(lists) == 1:
             return lists[0]
-        if len(lists) == 2:
-            l1, l2 = lists[0], lists[1]
-        else:
-            mid = len(lists) // 2
-            l1 = self.mergeKLists(lists[:mid])
-            l2 = self.mergeKLists(lists[mid:])
+        mid = len(lists) // 2
+        l1 = self.mergeKLists(lists[:mid])
+        l2 = self.mergeKLists(lists[mid:])
         res = ListNode()
         cur = res
         while l1 and l2:

@@ -3,8 +3,6 @@ from typing import List
 
 class Solution:
     def kClosest(self, points: List[List[int]], K: int) -> List[List[int]]:
-        points = [(a ** 2 + b ** 2, [a, b]) for a, b in points]
-
         def select(low, high):
             start = low
             end = high
@@ -12,11 +10,8 @@ class Solution:
             while low <= high:
                 if points[low] <= points[start]:
                     low += 1
-                elif points[high] >= points[start]:
-                    high -= 1
-                elif low != high:
+                else:
                     points[low], points[high] = points[high], points[low]
-                    low += 1
                     high -= 1
             points[low - 1], points[start] = points[start], points[low - 1]
             if low - 1 <= K <= low:
@@ -26,6 +21,7 @@ class Solution:
             else:
                 return select(low, end)
 
+        points = [(a ** 2 + b ** 2, [a, b]) for a, b in points]
         return select(0, len(points) - 1)
 
 

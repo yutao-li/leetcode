@@ -11,3 +11,5 @@ Leetcode inventory.
 149.https://leetcode.com/problems/max-points-on-a-line/discuss/1655358/4-line-solution
 
 716.https://leetcode.com/problems/max-stack/discuss/1727772/a-single-heap-is-sufficient
+
+1494.https://leetcode.com/problems/parallel-courses-ii/discuss/1784460/30-line-python-beats-100
