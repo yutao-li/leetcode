@@ -1,47 +1,50 @@
-from typing import List
-
-
 class Solution:
-    def removeInvalidParentheses(self, s: str) -> List[str]:
-        def truncate(st, brace):
-            res = []
-            pos = st.find(brace)
-            while pos != -1:
-                while pos + 1 < len(st) and st[pos + 1] == brace:
-                    pos += 1
-                res.append(st[:pos] + st[pos + 1:])
-                pos = st.find(brace, pos + 1)
-            return res
+    def removeInvalidParentheses(self, s):
+        def isvalid(s):
+            ctr = 0
+            for c in s:
+                if c == '(':
+                    ctr += 1
+                elif c == ')':
+                    ctr -= 1
+                    if ctr < 0:
+                        return False
+            return ctr == 0
 
-        def remove(st, brace):
-            res = ['']
-            i = 0
-            count = 0
-            start = 0
-            pre = '(' if brace == ')' else ')'
-            while i < len(st):
-                if st[i] == pre:
-                    count += 1
-                elif st[i] == brace:
-                    count -= 1
-                    if count < 0:
-                        res1 = [tr + st[start:i + 1] for prefix in res for tr in truncate(prefix, brace)]
-                        res2 = [prefix + tr for prefix in res for tr in truncate(st[start:i + 1], brace)]
-                        res = list(set(res1 + res2))
-                        count = 0
-                        start = i + 1
-                i += 1
-            return res, start, count
+        level = {s}
+        while True:
+            valid = list(filter(isvalid, level))
+            if valid:
+                return valid
+            level = {s[:i] + s[i + 1:] for s in level for i in range(len(s))}
 
-        res, start, count = remove(s, ')')
-        if count > 0:
-            tail = s[start:][::-1]
-            res1, start1, _ = remove(tail, '(')
-            res1 = [i + tail[start1:] for i in res1]
-            res = [i + j[::-1] for i in res for j in res1]
-        else:
-            res = [i + s[start:] for i in res]
+
+class Solution1:
+    def removeInvalidParentheses(self, s) -> [str]:
+        def remove(cur_s: str, cur_i: int, last_remove: int, braces: [str, str]):
+            balance = 0
+            for i in range(cur_i, len(cur_s)):
+                if cur_s[i] == braces[0]:
+                    balance += 1
+                elif cur_s[i] == braces[1]:
+                    balance -= 1
+                if balance < 0:
+                    for j in range(last_remove, i + 1):
+                        if cur_s[j] == braces[1] and (j == last_remove or cur_s[j - 1] != braces[1]):
+                            remove(cur_s[:j] + cur_s[j + 1:], i, j, braces)
+                    return
+            if balance == 0:
+                if braces[0] == '(':
+                    res.append(cur_s)
+                else:
+                    res.append(cur_s[::-1])
+            else:
+                remove(cur_s[::-1], 0, 0, braces[::-1])
+
+        res = []
+        remove(s, 0, 0, ['(', ')'])
         return res
 
 
-res = Solution().removeInvalidParentheses("(r(()()(")
+res = Solution1().removeInvalidParentheses("(r(()()(")
+print(res)

@@ -18,12 +18,13 @@ class Connect6:
         def streak(row, col, x_shift, y_shift) -> int:
             count = 0
             while 0 <= x_shift + row < self.size and 0 <= y_shift + col < self.size and self.pieces.get(
-                    (x_shift + row, y_shift + col), -1) == self.turn:
+                    (x_shift + row, y_shift + col), -1) == turn:
                 count += 1
                 row += x_shift
                 col += y_shift
             return count
 
+        turn = self.pieces[row, col]
         directions = [[1, 0], [0, 1], [-1, 1], [1, 1]]
         for x, y in directions:
             if streak(row, col, x, y) + streak(row, col, -x, -y) == 5:

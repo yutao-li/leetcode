@@ -12,16 +12,14 @@ class TreeNode:
 class Solution:
     def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
         def dfs(node):
-            res = 0
             if not node:
                 return 0
             if node.val < low:
-                res += dfs(node.right)
+                return dfs(node.right)
             elif node.val <= high:
-                res += node.val + dfs(node.left) + dfs(node.right)
+                return node.val + dfs(node.left) + dfs(node.right)
             else:
-                res += dfs(node.left)
-            return res
+                return dfs(node.left)
 
         return dfs(root)
 

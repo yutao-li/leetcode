@@ -1,7 +1,7 @@
 class Node:
-    def __init__(self, key, value):
-        self.pre = None
-        self.next = None
+    def __init__(self, key, value, left, right):
+        self.left = left
+        self.right = right
         self.key = key
         self.value = value
 
@@ -12,50 +12,43 @@ class LRUCache:
         self.capacity = capacity
         self.di = dict()
         self.counter = 0
-        self.h_key = None
-        self.b_key = None
+        self.head = Node(None, 0, None, None)
+        self.tail = Node(None, 0, None, None)
+        self.head.right = self.tail
+        self.tail.left = self.head
 
     def get(self, key: int) -> int:
         if key not in self.di:
             return -1
         else:
-            cur_node = self.di[key]
-            if self.h_key != key:
-                next_node = cur_node.right
-                pre_node = cur_node.pre
-                if next_node:
-                    next_node.pre = pre_node
-                else:
-                    self.b_key = pre_node.key
-                pre_node.right = next_node
-                head = self.di[self.h_key]
-                head.pre = cur_node
-                cur_node.pre = None
-                cur_node.right = head
-                self.h_key = key
-            return cur_node.value
+            node = self.di[key]
+            next_node = node.right
+            pre_node = node.left
+            next_node.left = pre_node
+            pre_node.right = next_node
+
+            next_node = self.head.right
+            next_node.left = node
+            self.head.right = node
+            node.left = self.head
+            node.right = next_node
+            return node.value
 
     def put(self, key: int, value: int) -> None:
         if key not in self.di:
-            if self.capacity > 1:
-                if self.counter == self.capacity:
-                    second = self.di[self.b_key].pre
-                    second.right = None
-                    del self.di[self.b_key]
-                    self.b_key = second.key
-                    self.counter -= 1
-                tmp = Node(key, value)
-                self.counter += 1
-                self.di[key] = tmp
-                if self.h_key is not None:
-                    tmp.next = self.di[self.h_key]
-                    self.di[self.h_key].pre = tmp
-                else:
-                    self.b_key = key
-                self.h_key = key
-            else:
-                self.h_key = self.b_key = key
-                self.di = {key: Node(key, value)}
+            next_node = self.head.right
+            node = Node(key, value, self.head, next_node)
+            self.di[key] = node
+            self.head.right = node
+            next_node.left = node
+            self.counter += 1
+            if self.counter > self.capacity:
+                self.counter -= 1
+                node = self.tail.left
+                pre_node = node.left
+                self.tail.left = pre_node
+                pre_node.right = self.tail
+                del self.di[node.key]
         else:
             self.di[key].value = value
             self.get(key)

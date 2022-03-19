@@ -26,4 +26,4 @@ class Solution:
                     pool1.append((node.right, col + 1))
             pool = pool1
 
-        return [t[i] for i in sorted(t.keys())]
+        return [t[i] for i in range(min(t.keys()), max(t.keys()) + 1)]

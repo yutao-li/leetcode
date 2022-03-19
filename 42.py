@@ -8,11 +8,11 @@ class Solution:
         que = []
         trap = 0
         for i, h in enumerate(height):
-            while que and h >= que[-1][1]:
-                if len(que) >= 2:
-                    trap += (min(h, que[-2][1]) - que[-1][1]) * (i - que[-2][0] - 1)
-                que.pop()
-            que.append((i, h))
+            while que and h >= height[que[-1]]:
+                dip = que.pop()
+                if que:
+                    trap += (min(h, height[que[-1]]) - height[dip]) * (i - que[-1] - 1)
+            que.append(i)
         return trap
 
 

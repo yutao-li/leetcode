@@ -1,6 +1,6 @@
 class Solution:
     def calculate(self, s: str) -> int:
-        def operate(op, b, a):
+        def operate(op, a, b):
             if op == '+':
                 return a + b
             elif op == '-':
@@ -8,32 +8,34 @@ class Solution:
             elif op == '*':
                 return a * b
             else:
-                return a // b
+                return int(a / b)
 
-        operator = []
-        operand = []
         i = 0
         s = "".join(i for i in s if i != ' ')
+        res = 0
+        num1 = 0
+        num2 = 0
+        operator = '+'
         while i < len(s):
             if s[i].isdigit():
                 j = i + 1
                 while j < len(s) and s[j].isdigit():
                     j += 1
-                operand.append(int(s[i:j]))
+                num2 = int(s[i:j])
                 i = j
             elif s[i] in '+-':
-                while operator:
-                    operand.append(operate(operator.pop(), operand.pop(), operand.pop()))
-                operator.append(s[i])
+                num1 = operate(operator, num1, num2)
+                operator = s[i]
                 i += 1
             else:
-                while operator and operator[-1] in '*/':
-                    operand.append(operate(operator.pop(), operand.pop(), operand.pop()))
-                operator.append(s[i])
+                if operator in '+-':
+                    res += num1
+                    num1 = -num2 if operator == '-' else num2
+                else:
+                    num1 = operate(operator, num1, num2)
+                operator = s[i]
                 i += 1
-        while operator:
-            operand.append(operate(operator.pop(), operand.pop(), operand.pop()))
-        return operand[0]
+        return res + operate(operator, num1, num2)
 
 
 print(Solution().calculate(" 3/2 "))
