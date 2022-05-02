@@ -1,11 +1,15 @@
-"""
-This is HtmlParser's API interface.
-You should not implement it, or speculate about its implementation
-"""
+from collections import deque
 from typing import List
+from threading import Thread, Lock
+from concurrent import futures
 
 
 class HtmlParser(object):
+    """
+    This is HtmlParser's API interface.
+    You should not implement it, or speculate about its implementation
+    """
+
     def __init__(self, urls, edges):
         self.urls = urls
         self.url2pos = dict(zip(urls, range(len(urls))))
@@ -21,38 +25,44 @@ class HtmlParser(object):
         return [self.urls[i] for i in self.adj[self.url2pos[url]]]
 
 
-from threading import Thread, Lock, active_count
-from queue import Queue
-
-
 class Solution:
     def crawl(self, startUrl: str, htmlParser: 'HtmlParser') -> List[str]:
+        def parse(url: str):
+            subUrls = []
+            for u in htmlParser.getUrls(url):
+                if u[7:(u + '/').find('/', 7)] == domain:
+                    with seenLock:
+                        if u not in seen:
+                            seen.add(u)
+                            subUrls.append(u)
+            threads = []
+            for u in subUrls:
+                t = Thread(target=parse, args=(u,))
+                t.start()
+                threads.append(t)
+            for t in threads:
+                t.join()
+
+        seenLock = Lock()
         seen = {startUrl}
         domain = startUrl[7:(startUrl + '/').find('/', 7)]
-        todo = Queue()
-        for i in htmlParser.getUrls(startUrl):
-            if i[7:(i + '/').find('/', 7)] == domain:
-                todo.put(i)
-                seen.add(i)
-        seen_lock = Lock()
-        init = active_count()
+        t = Thread(target=parse, args=(startUrl,))
+        t.start()
+        t.join()
+        return list(seen)
 
-        def th(url):
-            for i in htmlParser.getUrls(url):
-                if i[7:(i + '/').find('/', 7)] == domain:
-                    with seen_lock:
-                        if i not in seen:
-                            seen.add(i)
-                            todo.put(i)
 
-        while True:
-            # print(active_count())
-            if not todo.empty():
-                Thread(target=th, args=(todo.get(),)).start()
-                # print(active_count())
-            elif active_count() == init:
-                break
-
+class Solution1:
+    def crawl(self, startUrl: str, htmlParser: 'HtmlParser') -> List[str]:
+        hostname = lambda url: url.split('/')[2]
+        seen = {startUrl}
+        with futures.ThreadPoolExecutor(max_workers=16) as executor:
+            tasks = deque([executor.submit(htmlParser.getUrls, startUrl)])
+            while tasks:
+                for url in tasks.popleft().result():
+                    if url not in seen and hostname(startUrl) == hostname(url):
+                        seen.add(url)
+                        tasks.append(executor.submit(htmlParser.getUrls, url))
         return list(seen)
 
 
@@ -62,4 +72,4 @@ inp = [["http://news.yahoo.com", "http://news.yahoo.com/news", "http://news.yaho
     , "http://news.yahoo.com/news/topics/"]
 parser = HtmlParser(inp[0], inp[1])
 res = Solution().crawl(inp[2], parser)
-print(len(res))
+print(res)

@@ -4,7 +4,7 @@ class VersionRange:
         self.maxVersion = maxVersion
 
 
-def devideVersionsIntoIntervals(versions: [VersionRange]) -> [VersionRange]:
+def divideVersionsIntoIntervals(versions: [VersionRange]) -> [VersionRange]:
     if not versions:
         return []
     bounds = set()
@@ -23,6 +23,6 @@ def devideVersionsIntoIntervals(versions: [VersionRange]) -> [VersionRange]:
     return res
 
 
-vrs = devideVersionsIntoIntervals([VersionRange(4, 7), VersionRange(None, 16), VersionRange(7, 10)])
+vrs = divideVersionsIntoIntervals([VersionRange(4, 7), VersionRange(None, 16), VersionRange(7, 10)])
 for vr in vrs:
     print(vr.minVersion, vr.maxVersion)

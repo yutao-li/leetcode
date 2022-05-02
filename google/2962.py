@@ -21,14 +21,14 @@ def huffmanTree(mapping: {str: int}) -> Node:
     max_path = max(l2c)
     for depth in range(max_path - 1, -1, -1):
         next_layer = l2c[depth + 1]
-        assert len(next_layer) == 2
+        assert len(next_layer) % 2 == 0
         for i in range(0, len(next_layer), 2):
             l2c[depth].append(Node('*', next_layer[i], next_layer[i + 1]))
     assert len(l2c[0]) == 1
     return l2c[0][0]
 
 
-node = huffmanTree({'b': 2, 'e': 1, 'z': 2})
+node = huffmanTree({'b': 3, 'z': 3, 'a': 3, 'c': 3, 'b1': 3, 'z1': 3, 'a1': 3, 'c1': 3})
 
 
 def drawTree(root: Node):

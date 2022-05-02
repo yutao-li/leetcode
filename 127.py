@@ -1,5 +1,5 @@
 from typing import *
-from collections import defaultdict, deque
+from collections import defaultdict
 
 
 class Solution:
@@ -11,17 +11,13 @@ class Solution:
             for i in range(len(word)):
                 nodes[word[:i] + '*' + word[i + 1:]].append(word)
         visited_left = {beginWord}
-        queue_left = deque()
-        queue_left.append(beginWord)
-
+        queue_left = [beginWord]
         visited_right = {endWord}
-        queue_right = deque()
-        queue_right.append(endWord)
+        queue_right = [endWord]
         length = 1
         while queue_left and queue_right:
-            queue = deque()
-            while queue_left:
-                word = queue_left.popleft()
+            queue = []
+            for word in queue_left:
                 for i in range(len(word)):
                     for next_word in nodes[word[:i] + '*' + word[i + 1:]]:
                         if next_word not in visited_left:

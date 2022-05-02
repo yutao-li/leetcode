@@ -11,7 +11,6 @@ class Solution:
                     return True
             return False
 
-        wordDict.sort(key=len, reverse=True)
         return dfs(s)
 
 

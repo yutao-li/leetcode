@@ -1,11 +1,14 @@
 class Solution:
     def isValidPalindrome(self, s: str, k: int) -> bool:
-        def remove(s: str, i: int, j: int):
-            if j == k:
-                return s == s[::-1]
-            for m in range(i, len(s)):
-                if (m == i or s[m] != s[m - 1]) and remove(s[:m] + s[m + 1:], m, j + 1):
-                    return True
-            return s == s[::-1]
-
-        return remove(s, 0, 0)
+        n = len(s)
+        dp = [0] * n
+        for i in range(n - 2, -1, -1):
+            prev = 0
+            for j in range(i + 1, n):
+                tmp = dp[j]
+                if s[i] == s[j]:
+                    dp[j] = prev
+                else:
+                    dp[j] = 1 + min(dp[j - 1], dp[j])
+                prev = tmp
+        return dp[-1] <= k

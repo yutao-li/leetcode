@@ -18,7 +18,7 @@ class Solution:
         if cur < c:
             return ''
         res = s[:right]
-        while cur == c:
+        while True:
             ch = s[left]
             left += 1
             if ch in t:
@@ -26,13 +26,13 @@ class Solution:
                 if window[ch] < t[ch]:
                     if len(res) > right - left + 1:
                         res = s[left - 1:right]
-                    while window[ch] < t[ch] and right < len(s):
-                        ch1 = s[right]
+                    nextRight = s.find(ch, right)
+                    if nextRight == -1:
+                        break
+                    for ch1 in s[right:nextRight + 1]:
                         if ch1 in t:
                             window[ch1] += 1
-                        right += 1
-                    if window[ch] < t[ch]:
-                        cur -= 1
+                    right = nextRight + 1
         return res
 
 

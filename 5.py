@@ -1,27 +1,52 @@
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        if len(s) < 2:
-            return s
-        mid, radius = 0, 0
-        i = 0
-        while i + radius + 1 < len(s):
-            if s[i - radius:i] == s[i + radius:i:-1]:
-                while i - radius - 1 >= 0 and i + radius + 1 < len(s) and s[i - radius - 1] == s[i + radius + 1]:
-                    radius += 1
-                mid = i
-            i += 1
-        mid1, radius1 = 0, radius
-        i = radius
-        while i + radius1 < len(s):
-            if s[i - radius1:i] == s[i + radius1 - 1:i - 1:-1]:
-                while i - radius1 - 1 >= 0 and i + radius1 < len(s) and s[i - radius1 - 1] == s[i + radius1]:
-                    radius1 += 1
-                mid1 = i
-            i += 1
-        if radius >= radius1:
-            return s[mid - radius:mid + radius + 1]
-        else:
-            return s[mid1 - radius1:mid1 + radius1]
+        def expand(left, right):
+            while left >= 0 and right < n and s[left] == s[right]:
+                left -= 1
+                right += 1
+            return s[left + 1:right]
+
+        n = len(s)
+        maxPalindrome = ''
+        for i in range(n):
+            palindrome = expand(i, i)
+            if len(palindrome) > len(maxPalindrome):
+                maxPalindrome = palindrome
+            palindrome = expand(i, i + 1)
+            if len(palindrome) > len(maxPalindrome):
+                maxPalindrome = palindrome
+        return maxPalindrome
 
 
-print(Solution().longestPalindrome('babad'))
+# manacher's algorithm
+class Solution1:
+    def longestPalindrome(self, s: str) -> str:
+        s = '|' + '|'.join(s) + '|'
+        n = len(s)
+        center = 0
+        palindromeRadius = [0] * n
+        radius = 0
+        while center < n:
+            while center - (radius + 1) >= 0 and center + radius + 1 < n and s[center - (radius + 1)] == s[
+                center + radius + 1]:
+                radius += 1
+            palindromeRadius[center] = radius
+            oldCenter = center
+            rightBound = center + radius
+            center += 1
+            radius = 0
+            while center <= rightBound:
+                mirroredCenter = oldCenter - (center - oldCenter)
+                maxRadius = rightBound - center
+                palindromeRadius[center] = min(maxRadius, palindromeRadius[mirroredCenter])
+                if maxRadius == palindromeRadius[mirroredCenter]:
+                    radius = maxRadius
+                    break
+                else:
+                    center += 1
+        i = max(range(n), key=lambda x: palindromeRadius[x])
+        longest = s[i - palindromeRadius[i]:i + palindromeRadius[i] + 1]
+        return longest.replace('|', '')
+
+
+print(Solution1().longestPalindrome('babad'))

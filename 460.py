@@ -17,11 +17,11 @@ class LFUCache:
         self.count = 0
 
     def _update(self, node, prev_node):
-        next_node = prev_node.right
-        node.left, node.right = prev_node, next_node
-        prev_node.right = node
+        next_node = prev_node.next
+        node.prev, node.next = prev_node, next_node
+        prev_node.next = node
         if next_node:
-            next_node.left = node
+            next_node.prev = node
 
     def get(self, key: int) -> int:
         if self.capacity == 0:
@@ -29,8 +29,8 @@ class LFUCache:
         if key in self.cache:
             node = self.cache[key]
             freq = node.freq
-            prev_node = node.left
-            next_node = node.right
+            prev_node = node.prev
+            next_node = node.next
             if self.bottom == node:
                 if next_node and next_node.freq <= freq + 1:
                     self.bottom = next_node
@@ -41,14 +41,14 @@ class LFUCache:
                     del self.freq2node[freq]
                 if freq + 1 in self.freq2node:
                     if prev_node:
-                        prev_node.right = next_node
-                    next_node.left = prev_node
+                        prev_node.next = next_node
+                    next_node.prev = prev_node
                     prev_node = self.freq2node[freq + 1]
                     self._update(node, prev_node)
             else:
                 if prev_node:
-                    prev_node.right = next_node
-                next_node.left = prev_node
+                    prev_node.next = next_node
+                next_node.prev = prev_node
                 if freq + 1 not in self.freq2node:
                     prev_node = self.freq2node[freq]
                 else:
