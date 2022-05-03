@@ -11,7 +11,8 @@ def countChains(root):
     def countFromNode(node, length):
         if node.left:
             if node.right:
-                counter[length] += 1
+                if length:
+                    counter[length] += 1
                 countFromNode(node.left, 0)
                 countFromNode(node.right, 0)
             else:

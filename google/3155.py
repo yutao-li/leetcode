@@ -18,10 +18,7 @@ def arrangeKnockout(country2teams, groups, N):
         del adjList[n]
 
     groups += list(country2teams.values())
-    team2Country = [''] * N
     countrymatched = defaultdict(set)
-    for c, t in country2teams.items():
-        team2Country[t] = c
     disjointList = [[] for _ in range(N)]
     for group in groups:
         for i, team in enumerate(group):

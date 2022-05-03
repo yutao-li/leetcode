@@ -102,8 +102,7 @@ d = 5
 for i in range(100):
     f = floor(i / d)
     near[f].append(i)
-    if len(near[f]) == 2 and near[f][0] > near[f][1]:
-        near[f] = near[f][::-1]
+    near[f].sort()
     neighbours = near[f - 1] + near[f] + near[f + 1]
     for j, k, l in zip(neighbours, neighbours[1:], neighbours[2:]):
         if l - j <= d:

@@ -1,4 +1,4 @@
-from collections import Counter
+from collections import Counter, deque
 
 
 def removeMinElementsFromList2(list1, list2, k):
@@ -19,20 +19,20 @@ def removeMinElementsFromNList(lists, k, d):
     if d < 1:
         return lists
     elementCounter = Counter()
-    prevKWindows = []
+    prevKWindows = deque()
     res = []
     for i, iList in enumerate(lists):
         curList = []
         pos = 0
         while len(curList) < k and pos < len(iList):
-            if elementCounter[iList[pos]] <= 0:
+            if iList[pos] in elementCounter:
                 curList.append(iList[pos])
             pos += 1
         res.append(curList + iList[pos:])
         prevKWindows.append(curList)
         elementCounter.update(curList)
         if i >= d:
-            elementCounter.subtract(prevKWindows[i - d])
+            elementCounter -= Counter(prevKWindows.popleft())
     return res
 
 

@@ -1,35 +1,39 @@
-class Solution:
-    def isInterleave(self, s1, s2, s3):
-        """
-        :type s1: str
-        :type s2: str
-        :type s3: str
-        :rtype: bool
-        """
-        return self.dp(len(s3) - 1, len(s1) - 1, len(s2) - 1, s1, s2, s3, {})
+from functools import cache
 
-    def dp(self, e3, e1, e2, s1, s2, s3, mem):
-        if (e3, e1, e2) in mem:
-            return mem[e3, e1, e2]
-        if e1 == -1:
-            res = s3[:e3 + 1] == s2[:e2 + 1]
-        elif e2 == -1:
-            res = s3[:e3 + 1] == s1[:e1 + 1]
-        else:
-            if s1[e1] != s2[e2]:
-                if s3[e3] == s1[e1]:
-                    res = self.dp(e3 - 1, e1 - 1, e2, s1, s2, s3, mem)
-                elif s3[e3] == s2[e2]:
-                    res = self.dp(e3 - 1, e1, e2 - 1, s1, s2, s3, mem)
-                else:
-                    res = False
-            else:
-                if s3[e3] != s1[e1]:
-                    res = False
-                else:
-                    res = self.dp(e3 - 1, e1 - 1, e2, s1, s2, s3, mem) or self.dp(e3 - 1, e1, e2 - 1, s1, s2, s3, mem)
-        mem[e3, e1, e2] = res
-        return res
+
+class Solution:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        @cache
+        def dp(i1, i2):
+            if i1 == n1:
+                return s2[i2:] == s3[i1 + i2:]
+            if i2 == n2:
+                return s1[i1:] == s3[i1 + i2:]
+            if s1[i1] == s3[i1 + i2] and dp(i1 + 1, i2):
+                return True
+            if s2[i2] == s3[i1 + i2] and dp(i1, i2 + 1):
+                return True
+            return False
+
+        n1, n2, n3 = len(s1), len(s2), len(s3)
+        if n1 + n2 != n3:
+            return False
+        return dp(0, 0)
+
+
+class Solution1:
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        n1, n2, n3 = len(s1), len(s2), len(s3)
+        if n1 + n2 != n3:
+            return False
+        dp = [True] * (n2 + 1)
+        for i2 in range(n2 - 1, -1, -1):
+            dp[i2] = s2[i2] == s3[n1 + i2] and dp[i2 + 1]
+        for i1 in range(n1 - 1, -1, -1):
+            dp[n2] = dp[n2] and s1[i1] == s3[i1 + n2]
+            for i2 in range(n2 - 1, -1, -1):
+                dp[i2] = s1[i1] == s3[i1 + i2] and dp[i2] or s2[i2] == s3[i1 + i2] and dp[i2 + 1]
+        return dp[0]
 
 
 s1 = "aabcc"
