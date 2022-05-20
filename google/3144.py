@@ -26,9 +26,7 @@ def numOfDistinctPathsThroughOrderedTargets(width, height, orderedTargets):
 
 
 def numOfDistinctPathsThroughUnorderedTargets(width, height, unorderedTargets):
-    unorderedTargets.sort()
-    return reduce(lambda x, y: x * y, [pathsBetweenTwoTargets(target1, target2, height) for target1, target2 in
-                                       zip([(0, 0)] + unorderedTargets, unorderedTargets + [(width - 1, 0)])])
+    return numOfDistinctPathsThroughOrderedTargets(width, height, sorted(unorderedTargets))
 
 
 def numOfDistinctPathsThroughUnorderedTargetsWithBlockers(width, height, unorderedTargets, blockers):

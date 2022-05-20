@@ -14,7 +14,7 @@ class RunLengthDecoder:
 
     def __next__(self):
         if not self.hasNext():
-            raise ValueError('no element remains')
+            raise StopIteration('no element remains')
         self.runLength[-1] -= 1
         return self.runLength[-2]
 

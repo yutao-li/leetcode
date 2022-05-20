@@ -5,9 +5,6 @@ class Segment:
 
 
 class TreeMap:
-    def add(self, key, value):
-        pass
-
     def get(self, key) -> int:
         pass
 
@@ -48,24 +45,23 @@ def getPaintedAreaEachDay(segments):
         return []
     paintedAreas = []
     for segment in segments:
-        key = segment.start
-        value = segment.end
-        prev = treeMap.upperBound(key)
-        if prev and treeMap.get(prev) > key:
-            key = prev
+        start = segment.start
+        end = segment.end
+        prev = treeMap.upperBound(start)
+        if prev and treeMap.get(prev) > start:
+            start = prev
             left = treeMap.get(prev)
         else:
-            treeMap.add(key, value)
-            left = key
-        area = value - left
-        nextKey = treeMap.next(key)
-        while nextKey and nextKey <= value:
-            area -= min(value, treeMap.get(nextKey)) - nextKey
-            value = max(value, treeMap.get(nextKey))
+            left = start
+        area = end - left
+        nextKey = treeMap.next(start)
+        while nextKey and nextKey <= end:
+            area -= min(end, treeMap.get(nextKey)) - nextKey
+            end = max(end, treeMap.get(nextKey))
             newKey = treeMap.next(nextKey)
             treeMap.remove(nextKey)
             nextKey = newKey
-        treeMap.set(key, value)
+        treeMap.set(start, end)
         paintedAreas.append(max(0, area))
     return paintedAreas
 
@@ -84,4 +80,4 @@ def removePaint(segment):
     if nextKey:
         right = treeMap.get(nextKey)
         treeMap.remove(nextKey)
-        treeMap.add(value, right)
+        treeMap.set(value, right)

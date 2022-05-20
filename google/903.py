@@ -7,22 +7,20 @@ class MicroWave:
             minute, second = divmod(sequence, 100)
             return minute * 60 + second
 
+        def getMovesAndPress(sequence):
+            sequence = str(sequence)
+            return sum(i != j for i, j in zip(sequence, sequence[1:])), len(sequence)
+
         self.pressCost = pressCost
         self.moveCost = moveCost
         self.gapCost = gapCost
-        self.seq2sec = []
-        for i in range(10000):
-            self.seq2sec.append(getSeconds(i))
+        self.seq2sec = [getSeconds(i) for i in range(10000)]
+        self.seq2movesAndPress = [getMovesAndPress(i) for i in range(10000)]
 
     def findOptimalButtonPress(self, desiredTime):
         def getCost(sequence):
-            buttons = []
-            while sequence:
-                sequence, curButton = divmod(sequence, 10)
-                buttons.append(curButton)
-            cost = len(buttons) * pressCost
-            cost += sum(i != j for i, j in zip(buttons, buttons[1:])) * moveCost
-            return cost
+            moves, press = self.seq2movesAndPress[sequence]
+            return press * pressCost + moves * moveCost
 
         def getRangeOfSequence(low, high):
             lminute, lsecond = divmod(low, 60)

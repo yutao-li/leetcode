@@ -79,9 +79,8 @@ class Cook1:
             self.rawIngredients[r.name].append(r.ingredients)
 
     def canMakeMeal(self, recipe):
-        n = len(self.supplies)
         supplies = Counter(self.supplies)
         for ingred in self.rawIngredients[recipe]:
-            if len(supplies - Counter(ingred)) == n:
+            if supplies >= Counter(ingred):
                 return True
         return False

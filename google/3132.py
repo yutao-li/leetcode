@@ -26,6 +26,9 @@ class Decoder:
                 return
             self.inputString.pop()
             node = child[0]
+        if not node.decodeString:
+            self.isValid = False
+            return
         self.outputString = list(node.decodeString[::-1])
 
     def hasNext(self) -> bool:

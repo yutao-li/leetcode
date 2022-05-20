@@ -27,9 +27,9 @@ def parseCsv(filePath):
                 try:
                     line = parseLine(line)
                 except ValueError as e:
-                    raise ValueError("parse error at row " + str(i + 2), e)
+                    raise ValueError("parse error at row " + str(i), e)
                 if len(line) != n:
-                    raise ValueError("inconsistent columns at row " + str(i + 2))
+                    raise ValueError("inconsistent columns at row " + str(i))
                 row = {field: value for field, value in zip(columns, line)}
                 data.append(row)
             return data

@@ -4,7 +4,6 @@ from math import log2
 
 class LooseMedian:
     def __init__(self):
-        self.count = 0
         self.segmentTree = [0] * 128
 
     def insert(self, n: int):
@@ -13,7 +12,6 @@ class LooseMedian:
         if n == 0:
             n += 1
         i = int(log2(n)) + 64
-        self.count += 1
         while i:
             self.segmentTree[i] += 1
             i //= 2
@@ -46,3 +44,4 @@ looseMedian.insert(4)
 print(looseMedian.get())
 looseMedian.insert(5)
 print(looseMedian.get())
+looseMedian.insert(0)

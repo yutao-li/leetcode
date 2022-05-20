@@ -25,7 +25,7 @@ def removeMinElementsFromNList(lists, k, d):
         curList = []
         pos = 0
         while len(curList) < k and pos < len(iList):
-            if iList[pos] in elementCounter:
+            if iList[pos] not in elementCounter:
                 curList.append(iList[pos])
             pos += 1
         res.append(curList + iList[pos:])

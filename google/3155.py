@@ -17,6 +17,16 @@ def arrangeKnockout(country2teams, groups, N):
                 del adjList[n1]
         del adjList[n]
 
+    def findPick():
+        pick = None
+        for k, v in adjList.items():
+            if len(v) == 1:
+                pick = k
+                break
+        if not pick:
+            pick = next(iter(adjList))
+        return pick
+
     groups += list(country2teams.values())
     countrymatched = defaultdict(set)
     disjointList = [[] for _ in range(N)]
@@ -28,13 +38,7 @@ def arrangeKnockout(country2teams, groups, N):
         adjList[team] = [t for t in range(N) if t not in set(excluded)]
     matched = []
     while adjList:
-        pick = None
-        for k, v in adjList.items():
-            if len(v) == 1:
-                pick = k
-                break
-        if not pick:
-            pick = next(iter(adjList))
+        pick = findPick()
         rival = findRival(pick)
         countrymatched[rival].add(pick)
         countrymatched[pick].add(rival)

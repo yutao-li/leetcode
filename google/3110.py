@@ -9,56 +9,6 @@ class Node:
 
 directions = ('downleft', 'downright', 'upleft', 'upright')
 
-
-def preorder_traversal(node: Node):
-    res = []
-    direction = directions[0]
-    while node:
-        if direction == directions[0]:
-            res.append(node.val)
-            if node.left:
-                node = node.left
-            elif node.right:
-                node = node.right
-                direction = direction[1]
-            else:
-                node = node.parent
-                direction = directions[3]
-        elif direction == directions[1]:
-            res.append(node.val)
-            if node.left:
-                node = node.left
-                direction = directions[0]
-            elif node.right:
-                node = node.right
-            else:
-                node = node.parent
-                direction = directions[2]
-        elif direction == directions[2]:
-            if not node.parent:
-                return res
-            parent = node.parent
-            if parent.left == node:
-                direction = directions[3]
-            else:
-                direction = directions[2]
-            node = parent
-        else:
-            if node.right:
-                direction = directions[1]
-                node = node.right
-            else:
-                parent = node.parent
-                if not node.parent:
-                    return res
-                if parent.left == node:
-                    direction = directions[3]
-                else:
-                    direction = directions[2]
-                node = parent
-    return res
-
-
 node1 = Node(None, None, None, 1)
 # node2=Node(None,None,None,2)
 # node3=Node(None,None,None,3)

@@ -110,3 +110,4 @@ for i in range(100):
             for n in res:
                 near[floor(n / d)].remove(n)
             print(res)
+            break

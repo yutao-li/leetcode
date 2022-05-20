@@ -11,11 +11,11 @@ def findIndexDigitMatch(pi):
 
 def findIndexDigitMatch1(pi):
     piSlice = 0
-    modolo = 10
+    modulo = 10
     for i in range(1, 10 ** 6 + 1):
-        if i >= modolo:
-            modolo *= 10
-        piSlice = (10 * piSlice + next(pi)) % modolo
+        if i >= modulo:
+            modulo *= 10
+        piSlice = (10 * piSlice + next(pi)) % modulo
         if piSlice == i:
             print(i)
 

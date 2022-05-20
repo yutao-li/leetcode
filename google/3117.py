@@ -45,8 +45,12 @@ def isValid33(graph: Graph) -> bool:
     pre = -1
     seen = set()
     for i in range(8):
-        if i % 2 == 0 and cur not in degree[2] or i % 2 and cur not in degree[3]:
-            return False
+        if i % 2 == 0:
+            if cur not in degree[2]:
+                return False
+        else:
+            if cur not in degree[3]:
+                return False
         a, b = adj[cur]
         if a == pre:
             cur, pre = b, cur
